@@ -4,13 +4,15 @@ const bodyParser = require("body-parser");
 const webHook = require("./../models/webhookmodels");
 const { randomUUID } = require("crypto");
 const { UUID } = require("bson");
-const uuid = require('uuid')
+const uuid = require('uuid');
+var cache = require('memory-cache');
 
 let uid;
-exports.getUUID =async(req,res)=>{
+exports.getUUID =async(req,res, next)=>{
     uid = uuid.v4();
     
     res.send(uid);
+    next();
 }
 
 // exports.countUrlHit =async(req,res)=>{
@@ -26,7 +28,6 @@ var count=0;
 exports.WebHooks = async(req,res)=>{
     const webhook = await webHook.create({
         "Content": req.body['Content'],
-        "hits":req.body['hits'],
         "id":req.body['id']
      });
     //  uuid=webhook.Content;
@@ -43,9 +44,9 @@ exports.WebHooks = async(req,res)=>{
      console.log(count);
      c=count;
      if(c<2){
-        res.json(`http://localhost:3002/webhook/v1/${uid}`)
+        res.json({url: `http://localhost:3002/webhook/v1/${uid}`, hits:c ,content:req.body.Content})
    
-     } else res.send("Invalid URL") ;
+     } else res.send({url:"Invalid URL",hits:c}) ;
     //    if(count<5){
     //     res.send(uid)
     //  }
@@ -67,4 +68,5 @@ exports.WebHooks = async(req,res)=>{
 //         default:
 //             res.send("Invalid number");
 //    }
+cache.put('', 'value');
 }

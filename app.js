@@ -3,11 +3,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = require('./routes/webHookRoutes');
 const uuid = require('uuid');
-
+const NodeCache = require( "node-cache" );
+const myCache = new NodeCache();
 const env =require('dotenv');
 const cors = require('cors');
 const {fn} =require('./connections/connection');
 const { UUID } = require('bson');
+
 
 const app =express();
 

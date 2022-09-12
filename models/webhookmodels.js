@@ -5,10 +5,6 @@ const webHookSchema = new mongoose.Schema({
         unique:true,
         required:true
     },
-    hits:{
-        type:Number
-    },
-
     Content:{
         type:String,
         required:true
