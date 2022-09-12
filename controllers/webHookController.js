@@ -5,15 +5,22 @@ const webHook = require("./../models/webhookmodels");
 const { randomUUID } = require("crypto");
 const { UUID } = require("bson");
 const uuid = require('uuid');
-var cache = require('memory-cache');
+// var cache = require('memory-cache');
+const NodeCache = require( "node-cache" );
+const cache = new NodeCache();
 
 let uid;
 exports.getUUID =async(req,res, next)=>{
     uid = uuid.v4();
-    
-    res.send(uid);
-    next();
-}
+    console.log(uid);
+    // if(cache.has(req.query.uid)){
+    //     console.log('Retrieved value from cache !!')
+          
+        // Serve response from cache using
+        // myCache.get(key)
+        res.send({id:uid,idd:req.params.uuid});
+   }
+
 
 // exports.countUrlHit =async(req,res)=>{
 //     const data = await webHook.find();
@@ -68,5 +75,8 @@ exports.WebHooks = async(req,res)=>{
 //         default:
 //             res.send("Invalid number");
 //    }
-cache.put('', 'value');
+      
+    // If cache has key, retrieve value
+    // from cache itself
+
 }
